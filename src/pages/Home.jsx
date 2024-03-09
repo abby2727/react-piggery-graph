@@ -97,7 +97,7 @@ const Home = () => {
 				datasets: [
 					{
 						label: '',
-						data: myChartRef.current.data.datasets[0].data
+						data: getAmmoniaValues()
 					}
 				]
 			},
@@ -134,7 +134,7 @@ const Home = () => {
 		});
 
 		return () => myChart2.destroy();
-	}, []);
+	}, [data]);
 
 	const boxRef = useRef(null);
 	const [barLength, setBarLength] = useState(0);
