@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
 import { months } from '../constants/months';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Home = () => {
 	const [data, setData] = useState([]);
@@ -179,9 +180,9 @@ const Home = () => {
 	}, [barLength]);
 
 	return (
-		<>
+		<div className='chartCard'>
 			{!isLoading ? (
-				<div className='chartCard'>
+				<>
 					<div className='chartBox'>
 						<div className='colSmall'>
 							<canvas ref={chartRef2} />
@@ -192,13 +193,11 @@ const Home = () => {
 							</div>
 						</div>
 					</div>
-				</div>
+				</>
 			) : (
-				<div className='loader'>
-					<h1>Loading...</h1>
-				</div>
+				<LoadingSpinner />
 			)}
-		</>
+		</div>
 	);
 };
 
