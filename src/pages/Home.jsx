@@ -21,6 +21,7 @@ const Home = () => {
 		const values = data.map((item) => item.value);
 		return values;
 	};
+	// console.log('getAmmoniaValues', getAmmoniaValues());
 
 	const getAmmoniaLabels = () => {
 		const labels = data.map((item) => {
@@ -32,6 +33,7 @@ const Home = () => {
 
 		return labels;
 	};
+	// console.log('getAmmoniaLabels', getAmmoniaLabels());
 
 	//* ========== CHART 1
 	const chartRef = useRef(null);
@@ -42,11 +44,19 @@ const Home = () => {
 		myChartRef.current = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: getAmmoniaLabels(),
+				labels: [
+					'08, March',
+					'09, March',
+					'10, March',
+					'11, March',
+					'12, March',
+					'13, March',
+					'14, March'
+				],
 				datasets: [
 					{
 						label: 'Ammonia Levels (mg/L)',
-						data: getAmmoniaValues(),
+						data: [18, 20, 22, 24, 26, 28, 30],
 						backgroundColor: ['rgba(255, 206, 86, 0.2)'],
 						borderColor: ['rgba(255, 206, 86, 1)'],
 						borderWidth: 1
@@ -97,7 +107,7 @@ const Home = () => {
 				datasets: [
 					{
 						label: '',
-						data: getAmmoniaValues()
+						data: [18, 20, 22, 24, 26, 28, 30]
 					}
 				]
 			},
