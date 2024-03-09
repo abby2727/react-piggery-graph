@@ -58,102 +58,108 @@ const Home = () => {
 	const myChartRef = useRef(null);
 
 	useEffect(() => {
-		const ctx = chartRef.current.getContext('2d');
-		myChartRef.current = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: getAmmoniaLabels(transformObject(data)),
-				datasets: [
-					{
-						label: 'Ammonia Levels (mg/L)',
-						data: getAmmoniaAverageValues(transformObject(data)),
-						backgroundColor: ['rgba(255, 206, 86, 0.2)'],
-						borderColor: ['rgba(255, 206, 86, 1)'],
-						borderWidth: 1
-					}
-				]
-			},
-			//* ========== CHART 1 OPTIONS
-			options: {
-				maintainAspectRatio: false,
-				layout: {
-					padding: {
-						top: 10,
-						bottom: 10
-					}
+		if (!isLoading) {
+			const ctx = chartRef.current.getContext('2d');
+			myChartRef.current = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: getAmmoniaLabels(transformObject(data)),
+					datasets: [
+						{
+							label: 'Ammonia Levels (mg/L)',
+							data: getAmmoniaAverageValues(
+								transformObject(data)
+							),
+							backgroundColor: ['rgba(255, 206, 86, 0.2)'],
+							borderColor: ['rgba(255, 206, 86, 1)'],
+							borderWidth: 1
+						}
+					]
 				},
-				scales: {
-					y: {
-						beginAtZero: true,
-						ticks: {
+				//* ========== CHART 1 OPTIONS
+				options: {
+					maintainAspectRatio: false,
+					layout: {
+						padding: {
+							top: 10,
+							bottom: 10
+						}
+					},
+					scales: {
+						y: {
+							beginAtZero: true,
+							ticks: {
+								display: false
+							},
+							grid: {
+								drawTicks: false,
+								drawBorder: false
+							}
+						}
+					},
+					plugins: {
+						legend: {
 							display: false
-						},
-						grid: {
-							drawTicks: false,
-							drawBorder: false
 						}
 					}
-				},
-				plugins: {
-					legend: {
-						display: false
-					}
 				}
-			}
-		});
+			});
 
-		return () => myChartRef.current.destroy();
+			return () => myChartRef.current.destroy();
+		}
 	}, [data]);
 
 	//* ========== CHART 2
 	const chartRef2 = useRef(null);
 
 	useEffect(() => {
-		const ctx2 = chartRef2.current.getContext('2d');
-		const myChart2 = new Chart(ctx2, {
-			type: 'bar',
-			data: {
-				labels: [],
-				datasets: [
-					{
-						label: '',
-						data: getAmmoniaAverageValues(transformObject(data))
-					}
-				]
-			},
-			//* ========== CHART 2 OPTIONS
-			options: {
-				maintainAspectRatio: false,
-				layout: {
-					padding: {
-						bottom: 56
-					}
+		if (!isLoading) {
+			const ctx2 = chartRef2.current.getContext('2d');
+			const myChart2 = new Chart(ctx2, {
+				type: 'bar',
+				data: {
+					labels: [],
+					datasets: [
+						{
+							label: '',
+							data: getAmmoniaAverageValues(transformObject(data))
+						}
+					]
 				},
-				scales: {
-					x: {
-						ticks: {
-							display: false
-						},
-						grid: {
-							drawTicks: false
+				//* ========== CHART 2 OPTIONS
+				options: {
+					maintainAspectRatio: false,
+					layout: {
+						padding: {
+							bottom: 56
 						}
 					},
-					y: {
-						beginAtZero: true,
-						afterFit: (ctx) => {
-							ctx.width = 40;
+					scales: {
+						x: {
+							ticks: {
+								display: false
+							},
+							grid: {
+								drawTicks: false
+							}
+						},
+						y: {
+							beginAtZero: true,
+							afterFit: (ctx) => {
+								ctx.width = 40;
+							}
+						}
+					},
+					plugins: {
+						legend: {
+							display: false
 						}
 					}
-				},
-				plugins: {
-					legend: {
-						display: false
-					}
 				}
-			}
-		});
+			});
 
-		return () => myChart2.destroy();
+			return () => myChart2.destroy();
+		}
 	}, [data]);
 
 	const boxRef = useRef(null);
@@ -173,18 +179,26 @@ const Home = () => {
 	}, [barLength]);
 
 	return (
-		<div className='chartCard'>
-			<div className='chartBox'>
-				<div className='colSmall'>
-					<canvas ref={chartRef2} />
-				</div>
-				<div className='colLarge'>
-					<div className='box' ref={boxRef}>
-						<canvas ref={chartRef} />
+		<>
+			{!isLoading ? (
+				<div className='chartCard'>
+					<div className='chartBox'>
+						<div className='colSmall'>
+							<canvas ref={chartRef2} />
+						</div>
+						<div className='colLarge'>
+							<div className='box' ref={boxRef}>
+								<canvas ref={chartRef} />
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			) : (
+				<div className='loader'>
+					<h1>Loading...</h1>
+				</div>
+			)}
+		</>
 	);
 };
 
