@@ -38,16 +38,11 @@ const Home = () => {
 
 		return groupedData;
 	};
-	console.log('transformObject:', transformObject(data));
 
-	function getAmmoniaAverageValues(data) {
+	const getAmmoniaAverageValues = (data) => {
 		let values = Object.values(data).map((value) => value);
 		return values;
-	}
-	console.log(
-		'getAmmoniaAverageValues:',
-		getAmmoniaAverageValues(transformObject(data))
-	);
+	};
 
 	const getAmmoniaLabels = (data) => {
 		let formattedDates = Object.keys(data).map((date) => {
@@ -57,7 +52,6 @@ const Home = () => {
 
 		return formattedDates;
 	};
-	console.log('getAmmoniaLabels:', getAmmoniaLabels(transformObject(data)));
 
 	//* ========== CHART 1
 	const chartRef = useRef(null);
@@ -68,19 +62,11 @@ const Home = () => {
 		myChartRef.current = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: [
-					'08, March',
-					'09, March',
-					'10, March',
-					'11, March',
-					'12, March',
-					'13, March',
-					'14, March'
-				],
+				labels: getAmmoniaLabels(transformObject(data)),
 				datasets: [
 					{
 						label: 'Ammonia Levels (mg/L)',
-						data: [18, 20, 22, 24, 26, 28, 30],
+						data: getAmmoniaAverageValues(transformObject(data)),
 						backgroundColor: ['rgba(255, 206, 86, 0.2)'],
 						borderColor: ['rgba(255, 206, 86, 1)'],
 						borderWidth: 1
@@ -131,7 +117,7 @@ const Home = () => {
 				datasets: [
 					{
 						label: '',
-						data: [18, 20, 22, 24, 26, 28, 30]
+						data: getAmmoniaAverageValues(transformObject(data))
 					}
 				]
 			},
