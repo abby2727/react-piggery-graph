@@ -1,7 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
+import axios from 'axios';
+import { months } from '../constants/months';
 
 const Home = () => {
+	const [data, setData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	const fetchData = async () => {
+		const res = await axios.get('http://localhost:3000/ammonia/');
+		setData(res.data);
+		setIsLoading(false);
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	const getAmmoniaValues = () => {
+		const values = data.map((item) => item.value);
+		return values;
+	};
+
+	const getAmmoniaLabels = () => {
+		const labels = data.map((item) => {
+			let date = new Date(item.created_at);
+			let dayName = date.getDate();
+			let monthName = months[date.getMonth()];
+			return `${dayName}, ${monthName}`;
+		});
+
+		return labels;
+	};
+
 	//* ========== CHART 1
 	const chartRef = useRef(null);
 	const myChartRef = useRef(null);
@@ -11,26 +42,11 @@ const Home = () => {
 		myChartRef.current = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: [
-					'Mon',
-					'Tue',
-					'Wed',
-					'Thu',
-					'Fri',
-					'Sat',
-					'Sun',
-					'Mon',
-					'Tue',
-					'Wed',
-					'Thu',
-					'Fri',
-					'Sat',
-					'Sun'
-				],
+				labels: getAmmoniaLabels(),
 				datasets: [
 					{
-						label: 'Weekly Sales',
-						data: [18, 12, 6, 9, 12, 3, 9, 18, 12, 6, 9, 12, 3, 9],
+						label: 'Ammonia Levels (mg/L)',
+						data: getAmmoniaValues(),
 						backgroundColor: ['rgba(255, 206, 86, 0.2)'],
 						borderColor: ['rgba(255, 206, 86, 1)'],
 						borderWidth: 1
@@ -67,7 +83,7 @@ const Home = () => {
 		});
 
 		return () => myChartRef.current.destroy();
-	}, []);
+	}, [data]);
 
 	//* ========== CHART 2
 	const chartRef2 = useRef(null);

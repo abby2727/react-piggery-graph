@@ -1,15 +1,39 @@
 {
-	"posts": [
-		{ "id": "1", "title": "a title", "views": 100 },
-		{ "id": "2", "title": "another title", "views": 200 },
-		{ "id": "3", "title": "yet another title", "views": 300 },
-		{ "id": "4", "title": "yet another title", "views": 400 }
-	],
-	"comments": [
-		{ "id": "1", "text": "a comment about post 1", "postId": "1" },
-		{ "id": "2", "text": "another comment about post 1", "postId": "1" }
-	],
-	"profile": {
-		"name": "typicode"
-	}
+	"ammonia": [
+		{
+			"id": 1,
+			"value": 12.3,
+			"created_at": "2024-03-08 11:46:54"
+		},
+		{
+			"id": 2,
+			"value": 7.8,
+			"created_at": "2024-03-09 13:46:54"
+		},
+		{
+			"id": 3,
+			"value": 9.2,
+			"created_at": "2024-03-10 15:46:54"
+		},
+		{
+			"id": 4,
+			"value": 15.6,
+			"created_at": "2024-03-11 17:46:54"
+		},
+		{
+			"id": 5,
+			"value": 11.5,
+			"created_at": "2024-03-12 19:46:54"
+		},
+		{
+			"id": 6,
+			"value": 12.3,
+			"created_at": "2024-03-13 21:46:54"
+		},
+		{
+			"id": 7,
+			"value": 10.1,
+			"created_at": "2024-03-25 8:46:54"
+		}
+	]
 }
