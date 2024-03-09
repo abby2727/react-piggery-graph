@@ -70,17 +70,17 @@ body {
 .chartCard {
 	width: 100vw;
 	height: calc(100vh - 3.5rem);
-	background: rgba(54, 162, 235, 0.2);
+	background-image: linear-gradient(#ffffff, #e1e1e1);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
 .chartBox {
-	width: 700px;
+	width: 1000px;
 	padding: 20px;
-	border-radius: 20px;
-	border: solid 3px rgba(54, 162, 235, 1);
+	border-radius: 10px;
+	border: solid 3px #104177;
 	background: white;
 	display: flex;
 }
@@ -90,11 +90,11 @@ body {
 }
 
 .colLarge {
-	max-width: 700px;
+	max-width: 1000px;
 	overflow-x: scroll;
 }
 
 .box {
-	width: calc(700px - 40px);
-	height: 500px;
+	width: calc(1000px - 40px);
+	height: 600px;
 }

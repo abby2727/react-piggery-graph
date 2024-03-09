@@ -31,8 +31,8 @@ const Home = () => {
 					{
 						label: 'Weekly Sales',
 						data: [18, 12, 6, 9, 12, 3, 9, 18, 12, 6, 9, 12, 3, 9],
-						backgroundColor: ['rgba(255, 26, 104, 0.2)'],
-						borderColor: ['rgba(255, 26, 104, 1)'],
+						backgroundColor: ['rgba(255, 206, 86, 0.2)'],
+						borderColor: ['rgba(255, 206, 86, 1)'],
 						borderWidth: 1
 					}
 				]
@@ -131,7 +131,7 @@ const Home = () => {
 
 	useEffect(() => {
 		if (barLength > 7) {
-			const chartWidth = 700 + (barLength - 7) * 30;
+			const chartWidth = 1000 + (barLength - 7) * 30;
 			boxRef.current.style.width = `${chartWidth}px`;
 		}
 	}, [barLength]);
