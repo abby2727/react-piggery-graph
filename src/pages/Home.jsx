@@ -17,23 +17,47 @@ const Home = () => {
 		fetchData();
 	}, []);
 
-	const getAmmoniaValues = () => {
-		const values = data.map((item) => item.value);
-		return values;
-	};
-	// console.log('getAmmoniaValues', getAmmoniaValues());
+	const transformObject = (data) => {
+		let groupedData = {};
 
-	const getAmmoniaLabels = () => {
-		const labels = data.map((item) => {
-			let date = new Date(item.created_at);
-			let dayName = date.getDate();
-			let monthName = months[date.getMonth()];
-			return `${dayName}, ${monthName}`;
+		// Group data by date
+		data.forEach((item) => {
+			let date = item.created_at.split(' ')[0]; // get the date part of the timestamp
+			if (!groupedData[date]) {
+				groupedData[date] = [];
+			}
+			groupedData[date].push(item.value);
 		});
 
-		return labels;
+		// Calculate average value for each date
+		for (let date in groupedData) {
+			let sum = groupedData[date].reduce((a, b) => a + b, 0);
+			let avg = sum / groupedData[date].length;
+			groupedData[date] = avg.toFixed(2);
+		}
+
+		return groupedData;
 	};
-	// console.log('getAmmoniaLabels', getAmmoniaLabels());
+	console.log('transformObject:', transformObject(data));
+
+	function getAmmoniaAverageValues(data) {
+		let values = Object.values(data).map((value) => value);
+		return values;
+	}
+	console.log(
+		'getAmmoniaAverageValues:',
+		getAmmoniaAverageValues(transformObject(data))
+	);
+
+	const getAmmoniaLabels = (data) => {
+		let formattedDates = Object.keys(data).map((date) => {
+			let [year, month, day] = date.split('-');
+			return `${day}, ${months[parseInt(month) - 1]}`;
+		});
+
+		return formattedDates;
+	};
+	console.log('getAmmoniaLabels:', getAmmoniaLabels(transformObject(data)));
 
 	//* ========== CHART 1
 	const chartRef = useRef(null);
