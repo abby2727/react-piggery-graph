@@ -6,20 +6,20 @@ body {
 	margin: 0;
 }
 
-.container {
+/* .container {
 	margin: 1rem;
 	text-align: center;
-}
+} */
 
 .nav {
-	/* background-color: #333; */
-	background-color: #edeff6;
-	color: black;
+	background-color: #104177;
+	color: white;
 	display: flex;
 	justify-content: space-between;
 	align-items: stretch;
 	gap: 2rem;
 	padding: 0 1rem;
+	height: 3.5rem;
 }
 
 .site-title {
@@ -63,4 +63,38 @@ body {
 
 .icon {
 	align-self: center;
+	color: white;
+}
+
+/* Chart Styling */
+.chartCard {
+	width: 100vw;
+	height: calc(100vh - 3.5rem);
+	background: rgba(54, 162, 235, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.chartBox {
+	width: 700px;
+	padding: 20px;
+	border-radius: 20px;
+	border: solid 3px rgba(54, 162, 235, 1);
+	background: white;
+	display: flex;
+}
+
+.colSmall {
+	width: 40px;
+}
+
+.colLarge {
+	max-width: 700px;
+	overflow-x: scroll;
+}
+
+.box {
+	width: calc(700px - 40px);
+	height: 500px;
 }
