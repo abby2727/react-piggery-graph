@@ -18,6 +18,7 @@ const Home = () => {
 	const [filterLoading, setFilterLoading] = useState(false);
 	const [dateError, setDateError] = useState(false);
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
@@ -88,12 +89,54 @@ const Home = () => {
 			const startDateObj = new Date(startDate);
 			const endDateObj = new Date(endDate);
 
-			// Validate that the start date is not later than the end date
+			// Validate that the start date is not later than the end date.
 			if (startDateObj > endDateObj) {
-				setSnackbarOpen(true);
 				setDateError(true);
+				setSnackbarOpen(true);
+				setSnackbarMessage(
+					'The start date cannot be later than the end date.'
+				);
 				return;
 			}
+			// End first validation
+
+			// Validate that the start date is not earlier than the first date in the data
+			const firstDataDate = new Date(
+				ammoniaValue?.data[0].created_at.split(' ')[0]
+			);
+			const formatStartDate = startDateObj.toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'short',
+				day: 'numeric'
+			});
+			const formatFirstDateRecord = firstDataDate.toLocaleDateString(
+				'en-US',
+				{
+					year: 'numeric',
+					month: 'short',
+					day: 'numeric'
+				}
+			);
+			// Create new Date objects from the year, month, and day
+			const startDateObjDateOnly = new Date(
+				startDateObj.getFullYear(),
+				startDateObj.getMonth(),
+				startDateObj.getDate()
+			);
+			const firstDataDateDateOnly = new Date(
+				firstDataDate.getFullYear(),
+				firstDataDate.getMonth(),
+				firstDataDate.getDate()
+			);
+			if (startDateObjDateOnly < firstDataDateDateOnly) {
+				setDateError(true);
+				setSnackbarOpen(true);
+				setSnackbarMessage(
+					`No data recorded at ${formatStartDate}. ${formatFirstDateRecord} is the first data recorded in database.`
+				);
+				return;
+			}
+			// End second validation
 
 			const utcStartDate = new Date(
 				startDateObj.getTime() -
@@ -291,7 +334,7 @@ const Home = () => {
 			<CustomSnackbar
 				open={snackbarOpen}
 				handleClose={() => setSnackbarOpen(false)}
-				message='The start date cannot be later than the end date.'
+				message={snackbarMessage}
 			/>
 			<div className='chartCard'>
 				{!isLoading || filterLoading ? (
