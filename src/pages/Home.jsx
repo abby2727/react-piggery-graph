@@ -3,20 +3,16 @@ import Chart from 'chart.js/auto';
 import axios from 'axios';
 import { months } from '../constants/months';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useQuery } from 'react-query';
 
 const Home = () => {
-	const [data, setData] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	const fetchData = async () => {
-		const res = await axios.get('http://localhost:3000/ammonia/');
-		setData(res.data);
-		setIsLoading(false);
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, []);
+	const { isLoading, data: ammoniaValue } = useQuery(
+		'ammonia-data',
+		() => {
+			return axios.get('http://localhost:3000/ammonia/');
+		},
+		{ staleTime: 10 * 60 * 1000 } // refetch only after 10 minutes
+	);
 
 	const transformObject = (data) => {
 		let groupedData = {};
@@ -61,16 +57,18 @@ const Home = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			const ctx = chartRef.current.getContext('2d');
+			const transformedData = transformObject(ammoniaValue?.data);
+
 			myChartRef.current = new Chart(ctx, {
 				type: 'bar',
 				data: {
-					labels: getAmmoniaLabels(transformObject(data)),
+					labels: getAmmoniaLabels(transformedData),
+					// labels: ['test 1', 'test 2', 'test 3'],
 					datasets: [
 						{
 							label: 'Ammonia Levels (mg/L)',
-							data: getAmmoniaAverageValues(
-								transformObject(data)
-							),
+							data: getAmmoniaAverageValues(transformedData),
+							// data: [1, 2, 3],
 							backgroundColor: ['rgba(255, 206, 86, 0.2)'],
 							borderColor: ['rgba(255, 206, 86, 1)'],
 							borderWidth: 1
@@ -108,7 +106,7 @@ const Home = () => {
 
 			return () => myChartRef.current.destroy();
 		}
-	}, [data]);
+	}, [ammoniaValue?.data]);
 
 	//* ========== CHART 2
 	const chartRef2 = useRef(null);
@@ -116,6 +114,8 @@ const Home = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			const ctx2 = chartRef2.current.getContext('2d');
+			const transformedData = transformObject(ammoniaValue?.data);
+
 			const myChart2 = new Chart(ctx2, {
 				type: 'bar',
 				data: {
@@ -123,7 +123,8 @@ const Home = () => {
 					datasets: [
 						{
 							label: '',
-							data: getAmmoniaAverageValues(transformObject(data))
+							data: getAmmoniaAverageValues(transformedData)
+							// data: [1, 2, 3]
 						}
 					]
 				},
@@ -161,7 +162,7 @@ const Home = () => {
 
 			return () => myChart2.destroy();
 		}
-	}, [data]);
+	}, [ammoniaValue?.data]);
 
 	const boxRef = useRef(null);
 	const [barLength, setBarLength] = useState(0);
