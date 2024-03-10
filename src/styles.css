@@ -119,3 +119,8 @@ body {
 	cursor: pointer;
 	margin-left: 10px;
 }
+
+.datepicker-error {
+	border: 1px solid red !important;
+	border-radius: 5px;
+}

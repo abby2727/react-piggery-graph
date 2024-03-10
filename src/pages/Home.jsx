@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from '@mui/material/Button';
+import CustomSnackbar from '../components/CustomSnackbar';
 
 const Home = () => {
 	const [startDate, setStartDate] = useState(null);
@@ -15,6 +16,8 @@ const Home = () => {
 	const [isDateRangeApplied, setIsDateRangeApplied] = useState(false);
 	const [filteredAmmoniaValue, setFilteredAmmoniaValue] = useState([]);
 	const [filterLoading, setFilterLoading] = useState(false);
+	const [dateError, setDateError] = useState(false);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
 
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
@@ -85,6 +88,13 @@ const Home = () => {
 			const startDateObj = new Date(startDate);
 			const endDateObj = new Date(endDate);
 
+			// Validate that the start date is not later than the end date
+			if (startDateObj > endDateObj) {
+				setSnackbarOpen(true);
+				setDateError(true);
+				return;
+			}
+
 			const utcStartDate = new Date(
 				startDateObj.getTime() -
 					startDateObj.getTimezoneOffset() * 60000
@@ -103,6 +113,8 @@ const Home = () => {
 
 			setFilteredAmmoniaValue(filteredAmmoniaData);
 			setIsDateRangeApplied(true);
+			setDateError(false);
+			setSnackbarOpen(false);
 		}
 	};
 
@@ -110,6 +122,8 @@ const Home = () => {
 		setStartDate(null);
 		setEndDate(null);
 		setIsDateRangeApplied(false);
+		setDateError(false);
+		setSnackbarOpen(false);
 	};
 
 	//* ========== CHART 1
@@ -247,7 +261,11 @@ const Home = () => {
 		<>
 			<div className='date-picker'>
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
-					<DatePicker value={startDate} onChange={setStartDate} />
+					<DatePicker
+						value={startDate}
+						onChange={setStartDate}
+						className={dateError ? 'datepicker-error' : ''}
+					/>
 					<span className='dash' />
 					<DatePicker value={endDate} onChange={setEndDate} />
 					<Button
@@ -270,6 +288,11 @@ const Home = () => {
 					</Button>
 				</LocalizationProvider>
 			</div>
+			<CustomSnackbar
+				open={snackbarOpen}
+				handleClose={() => setSnackbarOpen(false)}
+				message='The start date cannot be later than the end date.'
+			/>
 			<div className='chartCard'>
 				{!isLoading || filterLoading ? (
 					<>
