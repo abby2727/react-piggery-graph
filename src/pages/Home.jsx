@@ -10,9 +10,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from '@mui/material/Button';
 
 const Home = () => {
-	// Added state variables for start and end dates
 	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
+	const [isDateRangeApplied, setIsDateRangeApplied] = useState(false);
+	const [filteredAmmoniaValue, setFilteredAmmoniaValue] = useState([]);
 
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
@@ -58,10 +59,80 @@ const Home = () => {
 		return formattedDates;
 	};
 
-	// Added function to clear the date pickers
+	const filterDataByDateRange = (data, startDate, endDate) => {
+		if (startDate && endDate) {
+			const start = new Date(startDate);
+			const end = new Date(endDate);
+
+			start.setHours(0, 0, 0, 0);
+			end.setHours(0, 0, 0, 0);
+
+			const filteredData = data.filter((item) => {
+				const createdAt = new Date(item.created_at);
+				createdAt.setHours(0, 0, 0, 0);
+				return createdAt >= start && createdAt <= end;
+			});
+
+			return filteredData;
+		}
+	};
+
+	// useEffect(() => {
+	// 	const filteredAmmoniaData = filterDataByDateRange(
+	// 		ammoniaValue?.data,
+	// 		startDate,
+	// 		endDate
+	// 	);
+	// 	console.log(filteredAmmoniaData);
+	// }, [startDate, endDate]);
+
+	// useEffect(() => {
+	// 	if (isDateRangeApplied) {
+	// 		console.log('filteredAmmoniaValue:', filteredAmmoniaValue);
+	// 	} else {
+	// 		console.log('ammoniaValue?.data:', ammoniaValue?.data);
+	// 	}
+	// }, [ammoniaValue?.data, filteredAmmoniaValue, isDateRangeApplied]);
+
+	const handleSubmit = () => {
+		if (startDate && endDate) {
+			// Convert provided dates to Date objects
+			const startDateObj = new Date(startDate);
+			const endDateObj = new Date(endDate);
+
+			// Convert dates to UTC to avoid timezone issues
+			const utcStartDate = new Date(
+				startDateObj.getTime() -
+					startDateObj.getTimezoneOffset() * 60000
+			);
+			const utcEndDate = new Date(
+				endDateObj.getTime() - endDateObj.getTimezoneOffset() * 60000
+			);
+
+			// Format start date and end date in YYYY-MM-DD format
+			const formattedStartDate = utcStartDate.toISOString().split('T')[0];
+			const formattedEndDate = utcEndDate.toISOString().split('T')[0];
+
+			// Log the formatted dates
+			// console.log(formattedStartDate);
+			// console.log(formattedEndDate);
+
+			const filteredAmmoniaData = filterDataByDateRange(
+				ammoniaValue?.data,
+				formattedStartDate,
+				formattedEndDate
+			);
+
+			// console.log('filteredAmmoniaData:', filteredAmmoniaData);
+			setFilteredAmmoniaValue(filteredAmmoniaData);
+			setIsDateRangeApplied(true);
+		}
+	};
+
 	const handleClear = () => {
 		setStartDate(null);
 		setEndDate(null);
+		setIsDateRangeApplied(false);
 	};
 
 	//* ========== CHART 1
@@ -71,7 +142,9 @@ const Home = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			const ctx = chartRef.current.getContext('2d');
-			const transformedData = transformObject(ammoniaValue?.data);
+			const transformedData = isDateRangeApplied
+				? transformObject(filteredAmmoniaValue)
+				: transformObject(ammoniaValue?.data);
 
 			myChartRef.current = new Chart(ctx, {
 				type: 'bar',
@@ -120,7 +193,7 @@ const Home = () => {
 
 			return () => myChartRef.current.destroy();
 		}
-	}, [ammoniaValue?.data]);
+	}, [ammoniaValue?.data, filteredAmmoniaValue, isDateRangeApplied]);
 
 	//* ========== CHART 2
 	const chartRef2 = useRef(null);
@@ -128,7 +201,10 @@ const Home = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			const ctx2 = chartRef2.current.getContext('2d');
-			const transformedData = transformObject(ammoniaValue?.data);
+			// const transformedData = transformObject(ammoniaValue?.data);
+			const transformedData = isDateRangeApplied
+				? transformObject(filteredAmmoniaValue)
+				: transformObject(ammoniaValue?.data);
 
 			const myChart2 = new Chart(ctx2, {
 				type: 'bar',
@@ -176,7 +252,7 @@ const Home = () => {
 
 			return () => myChart2.destroy();
 		}
-	}, [ammoniaValue?.data]);
+	}, [ammoniaValue?.data, filteredAmmoniaValue, isDateRangeApplied]);
 
 	const boxRef = useRef(null);
 	const [barLength, setBarLength] = useState(0);
@@ -204,8 +280,8 @@ const Home = () => {
 					<Button
 						variant='contained'
 						color='primary'
-						onClick={() => console.log('submit')}
-						disabled={false}
+						onClick={handleSubmit}
+						disabled={!startDate || !endDate}
 						className='button'
 					>
 						Submit
@@ -214,12 +290,12 @@ const Home = () => {
 						variant='outlined'
 						color='secondary'
 						onClick={handleClear}
-						disabled={false}
+						disabled={!startDate && !endDate}
 						className='button'
-						style={{
-							display:
-								startDate && endDate ? 'inline-flex' : 'none'
-						}}
+						// style={{
+						// 	display:
+						// 		startDate && endDate ? 'inline-flex' : 'none'
+						// }}
 					>
 						Clear
 					</Button>
