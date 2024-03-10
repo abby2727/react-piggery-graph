@@ -113,3 +113,9 @@ body {
 	width: 10px;
 	position: relative;
 }
+
+.date-picker .button {
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	margin-left: 10px;
+}

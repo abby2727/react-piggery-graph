@@ -4,12 +4,16 @@ import axios from 'axios';
 import { months } from '../constants/months';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useQuery } from 'react-query';
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Button from '@mui/material/Button';
 
 const Home = () => {
+	// Added state variables for start and end dates
+	const [startDate, setStartDate] = useState(null);
+	const [endDate, setEndDate] = useState(null);
+
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
 		() => {
@@ -52,6 +56,12 @@ const Home = () => {
 		});
 
 		return formattedDates;
+	};
+
+	// Added function to clear the date pickers
+	const handleClear = () => {
+		setStartDate(null);
+		setEndDate(null);
 	};
 
 	//* ========== CHART 1
@@ -188,10 +198,31 @@ const Home = () => {
 		<>
 			<div className='date-picker'>
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<DatePicker /> <span className='dash' />
-						<DatePicker />
-					</LocalizationProvider>
+					<DatePicker value={startDate} onChange={setStartDate} />
+					<span className='dash' />
+					<DatePicker value={endDate} onChange={setEndDate} />
+					<Button
+						variant='contained'
+						color='primary'
+						onClick={() => console.log('submit')}
+						disabled={false}
+						className='button'
+					>
+						Submit
+					</Button>
+					<Button
+						variant='outlined'
+						color='secondary'
+						onClick={handleClear}
+						disabled={false}
+						className='button'
+						style={{
+							display:
+								startDate && endDate ? 'inline-flex' : 'none'
+						}}
+					>
+						Clear
+					</Button>
 				</LocalizationProvider>
 			</div>
 			<div className='chartCard'>
