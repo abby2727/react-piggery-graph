@@ -14,6 +14,7 @@ const Home = () => {
 	const [endDate, setEndDate] = useState(null);
 	const [isDateRangeApplied, setIsDateRangeApplied] = useState(false);
 	const [filteredAmmoniaValue, setFilteredAmmoniaValue] = useState([]);
+	const [filterLoading, setFilterLoading] = useState(false);
 
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
@@ -61,6 +62,7 @@ const Home = () => {
 
 	const filterDataByDateRange = (data, startDate, endDate) => {
 		if (startDate && endDate) {
+			setFilterLoading(true);
 			const start = new Date(startDate);
 			const end = new Date(endDate);
 
@@ -73,34 +75,16 @@ const Home = () => {
 				return createdAt >= start && createdAt <= end;
 			});
 
+			setFilterLoading(false);
 			return filteredData;
 		}
 	};
 
-	// useEffect(() => {
-	// 	const filteredAmmoniaData = filterDataByDateRange(
-	// 		ammoniaValue?.data,
-	// 		startDate,
-	// 		endDate
-	// 	);
-	// 	console.log(filteredAmmoniaData);
-	// }, [startDate, endDate]);
-
-	// useEffect(() => {
-	// 	if (isDateRangeApplied) {
-	// 		console.log('filteredAmmoniaValue:', filteredAmmoniaValue);
-	// 	} else {
-	// 		console.log('ammoniaValue?.data:', ammoniaValue?.data);
-	// 	}
-	// }, [ammoniaValue?.data, filteredAmmoniaValue, isDateRangeApplied]);
-
 	const handleSubmit = () => {
 		if (startDate && endDate) {
-			// Convert provided dates to Date objects
 			const startDateObj = new Date(startDate);
 			const endDateObj = new Date(endDate);
 
-			// Convert dates to UTC to avoid timezone issues
 			const utcStartDate = new Date(
 				startDateObj.getTime() -
 					startDateObj.getTimezoneOffset() * 60000
@@ -109,21 +93,14 @@ const Home = () => {
 				endDateObj.getTime() - endDateObj.getTimezoneOffset() * 60000
 			);
 
-			// Format start date and end date in YYYY-MM-DD format
 			const formattedStartDate = utcStartDate.toISOString().split('T')[0];
 			const formattedEndDate = utcEndDate.toISOString().split('T')[0];
-
-			// Log the formatted dates
-			// console.log(formattedStartDate);
-			// console.log(formattedEndDate);
-
 			const filteredAmmoniaData = filterDataByDateRange(
 				ammoniaValue?.data,
 				formattedStartDate,
 				formattedEndDate
 			);
 
-			// console.log('filteredAmmoniaData:', filteredAmmoniaData);
 			setFilteredAmmoniaValue(filteredAmmoniaData);
 			setIsDateRangeApplied(true);
 		}
@@ -150,12 +127,10 @@ const Home = () => {
 				type: 'bar',
 				data: {
 					labels: getAmmoniaLabels(transformedData),
-					// labels: ['test 1', 'test 2', 'test 3'],
 					datasets: [
 						{
 							label: 'Ammonia Levels (mg/L)',
 							data: getAmmoniaAverageValues(transformedData),
-							// data: [1, 2, 3],
 							backgroundColor: ['rgba(255, 206, 86, 0.2)'],
 							borderColor: ['rgba(255, 206, 86, 1)'],
 							borderWidth: 1
@@ -201,7 +176,6 @@ const Home = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			const ctx2 = chartRef2.current.getContext('2d');
-			// const transformedData = transformObject(ammoniaValue?.data);
 			const transformedData = isDateRangeApplied
 				? transformObject(filteredAmmoniaValue)
 				: transformObject(ammoniaValue?.data);
@@ -214,7 +188,6 @@ const Home = () => {
 						{
 							label: '',
 							data: getAmmoniaAverageValues(transformedData)
-							// data: [1, 2, 3]
 						}
 					]
 				},
@@ -292,17 +265,13 @@ const Home = () => {
 						onClick={handleClear}
 						disabled={!startDate && !endDate}
 						className='button'
-						// style={{
-						// 	display:
-						// 		startDate && endDate ? 'inline-flex' : 'none'
-						// }}
 					>
 						Clear
 					</Button>
 				</LocalizationProvider>
 			</div>
 			<div className='chartCard'>
-				{!isLoading ? (
+				{!isLoading || filterLoading ? (
 					<>
 						<div className='chartBox'>
 							<div className='colSmall'>
