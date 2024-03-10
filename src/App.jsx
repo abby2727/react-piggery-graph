@@ -8,8 +8,8 @@ const queryClient = new QueryClient();
 const App = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Navbar />
 			<div className='container'>
+				<Navbar />
 				<Routes>
 					<Route path='/' element={<Home />} />
 				</Routes>

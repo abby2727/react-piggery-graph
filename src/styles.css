@@ -6,10 +6,10 @@ body {
 	margin: 0;
 }
 
-/* .container {
-	margin: 1rem;
-	text-align: center;
-} */
+.container {
+	height: 100vh;
+	background-image: linear-gradient(#ffffff, #e1e1e1);
+}
 
 .nav {
 	background-color: #104177;
@@ -69,8 +69,7 @@ body {
 /* Chart Styling */
 .chartCard {
 	width: 100vw;
-	height: calc(100vh - 3.5rem);
-	background-image: linear-gradient(#ffffff, #e1e1e1);
+	padding-top: 3.5rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -97,4 +96,20 @@ body {
 .box {
 	width: calc(1000px - 40px);
 	height: 600px;
+}
+
+/* Date Picker Styling */
+.date-picker {
+	padding-top: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.dash {
+	display: inline-block;
+	margin: 0px 10px;
+	border-bottom: 1px solid black;
+	width: 10px;
+	position: relative;
 }

@@ -5,6 +5,10 @@ import { months } from '../constants/months';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useQuery } from 'react-query';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 const Home = () => {
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
@@ -181,24 +185,34 @@ const Home = () => {
 	}, [barLength]);
 
 	return (
-		<div className='chartCard'>
-			{!isLoading ? (
-				<>
-					<div className='chartBox'>
-						<div className='colSmall'>
-							<canvas ref={chartRef2} />
-						</div>
-						<div className='colLarge'>
-							<div className='box' ref={boxRef}>
-								<canvas ref={chartRef} />
+		<>
+			<div className='date-picker'>
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+					<LocalizationProvider dateAdapter={AdapterDayjs}>
+						<DatePicker /> <span className='dash' />
+						<DatePicker />
+					</LocalizationProvider>
+				</LocalizationProvider>
+			</div>
+			<div className='chartCard'>
+				{!isLoading ? (
+					<>
+						<div className='chartBox'>
+							<div className='colSmall'>
+								<canvas ref={chartRef2} />
+							</div>
+							<div className='colLarge'>
+								<div className='box' ref={boxRef}>
+									<canvas ref={chartRef} />
+								</div>
 							</div>
 						</div>
-					</div>
-				</>
-			) : (
-				<LoadingSpinner />
-			)}
-		</div>
+					</>
+				) : (
+					<LoadingSpinner />
+				)}
+			</div>
+		</>
 	);
 };
 
