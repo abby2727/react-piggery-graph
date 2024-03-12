@@ -186,7 +186,7 @@ const Home = () => {
 					labels: getAmmoniaLabels(transformedData),
 					datasets: [
 						{
-							label: 'Ammonia Levels (mg/L)',
+							label: 'Ammonia Levels',
 							data: getAmmoniaAverageValues(transformedData),
 							backgroundColor: ['rgba(255, 206, 86, 0.2)'],
 							borderColor: ['rgba(255, 206, 86, 1)'],
@@ -213,11 +213,6 @@ const Home = () => {
 								drawTicks: false,
 								drawBorder: false
 							}
-						}
-					},
-					plugins: {
-						legend: {
-							display: false
 						}
 					}
 				}
@@ -253,7 +248,8 @@ const Home = () => {
 					maintainAspectRatio: false,
 					layout: {
 						padding: {
-							bottom: 56
+							bottom: 56,
+							top: 42
 						}
 					},
 					scales: {
