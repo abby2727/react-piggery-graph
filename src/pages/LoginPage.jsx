@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { AuthContext } from '../App';
 
 const LoginPage = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
+	const { setIsLoggedIn } = useContext(AuthContext);
+
 	const handleLogin = (event) => {
 		event.preventDefault();
 		// Handle login logic here
 		console.log(`Username: ${username}, Password: ${password}`);
+		setIsLoggedIn(true);
 	};
 
 	return (
