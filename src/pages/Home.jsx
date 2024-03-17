@@ -23,9 +23,9 @@ const Home = () => {
 	const { isLoading, data: ammoniaValue } = useQuery(
 		'ammonia-data',
 		() => {
-			return axios.get('http://localhost:3000/ammonia/');
+			return axios.get('https://piggery-backend.vercel.app/api/ammonia');
 		},
-		{ staleTime: 10 * 60 * 1000 } // refetch only after 10 minutes
+		{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
 	);
 
 	const transformObject = (data) => {
@@ -33,7 +33,7 @@ const Home = () => {
 
 		// Group data by date
 		data.forEach((item) => {
-			let date = item.created_at.split(' ')[0]; // get the date part of the timestamp
+			let date = item.createdAt.split(' ')[0]; // get the date part of the timestamp
 			if (!groupedData[date]) {
 				groupedData[date] = [];
 			}
@@ -74,7 +74,7 @@ const Home = () => {
 			end.setHours(0, 0, 0, 0);
 
 			const filteredData = data.filter((item) => {
-				const createdAt = new Date(item.created_at);
+				const createdAt = new Date(item.createdAt);
 				createdAt.setHours(0, 0, 0, 0);
 				return createdAt >= start && createdAt <= end;
 			});
@@ -102,7 +102,7 @@ const Home = () => {
 
 			// Validate that the start date is not earlier than the first date in the data
 			const firstDataDate = new Date(
-				ammoniaValue?.data[0].created_at.split(' ')[0]
+				ammoniaValue?.data[0].createdAt.split(' ')[0]
 			);
 			const formatStartDate = startDateObj.toLocaleDateString('en-US', {
 				year: 'numeric',

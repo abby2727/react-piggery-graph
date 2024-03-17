@@ -25,9 +25,11 @@ const TemperatureGraph = () => {
 	const { isLoading, data: temperatureValue } = useQuery(
 		'temperature-data',
 		() => {
-			return axios.get('http://localhost:3000/temperature/');
+			return axios.get(
+				'https://piggery-backend.vercel.app/api/temperature/'
+			);
 		},
-		{ staleTime: 10 * 60 * 1000 } // refetch only after 10 minutes
+		{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
 	);
 
 	const transformObject = (data) => {
@@ -35,7 +37,7 @@ const TemperatureGraph = () => {
 
 		// Group data by date
 		data.forEach((item) => {
-			let date = item.created_at.split(' ')[0]; // get the date part of the timestamp
+			let date = item.createdAt.split(' ')[0]; // get the date part of the timestamp
 			if (!groupedData[date]) {
 				groupedData[date] = [];
 			}
@@ -76,7 +78,7 @@ const TemperatureGraph = () => {
 			end.setHours(0, 0, 0, 0);
 
 			const filteredData = data.filter((item) => {
-				const createdAt = new Date(item.created_at);
+				const createdAt = new Date(item.createdAt);
 				createdAt.setHours(0, 0, 0, 0);
 				return createdAt >= start && createdAt <= end;
 			});
@@ -104,7 +106,7 @@ const TemperatureGraph = () => {
 
 			// Validate that the start date is not earlier than the first date in the data
 			const firstDataDate = new Date(
-				temperatureValue?.data[0].created_at.split(' ')[0]
+				temperatureValue?.data[0].createdAt.split(' ')[0]
 			);
 			const formatStartDate = startDateObj.toLocaleDateString('en-US', {
 				year: 'numeric',

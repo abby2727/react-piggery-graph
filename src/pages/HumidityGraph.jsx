@@ -23,9 +23,11 @@ const HumidityGraph = () => {
 	const { isLoading, data: humidityValue } = useQuery(
 		'humidity-data',
 		() => {
-			return axios.get('http://localhost:3000/humidity/');
+			return axios.get(
+				'https://piggery-backend.vercel.app/api/humidity/'
+			);
 		},
-		{ staleTime: 10 * 60 * 1000 } // refetch only after 10 minutes
+		{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
 	);
 
 	const transformObject = (data) => {
@@ -33,7 +35,7 @@ const HumidityGraph = () => {
 
 		// Group data by date
 		data.forEach((item) => {
-			let date = item.created_at.split(' ')[0]; // get the date part of the timestamp
+			let date = item.createdAt.split(' ')[0]; // get the date part of the timestamp
 			if (!groupedData[date]) {
 				groupedData[date] = [];
 			}
@@ -74,7 +76,7 @@ const HumidityGraph = () => {
 			end.setHours(0, 0, 0, 0);
 
 			const filteredData = data.filter((item) => {
-				const createdAt = new Date(item.created_at);
+				const createdAt = new Date(item.createdAt);
 				createdAt.setHours(0, 0, 0, 0);
 				return createdAt >= start && createdAt <= end;
 			});
@@ -102,7 +104,7 @@ const HumidityGraph = () => {
 
 			// Validate that the start date is not earlier than the first date in the data
 			const firstDataDate = new Date(
-				humidityValue?.data[0].created_at.split(' ')[0]
+				humidityValue?.data[0].createdAt.split(' ')[0]
 			);
 			const formatStartDate = startDateObj.toLocaleDateString('en-US', {
 				year: 'numeric',

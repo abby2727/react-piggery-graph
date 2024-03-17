@@ -1,6 +1,12 @@
 ## Piggery Graph
 
-To use the fake backend api, run the following command:
+### Run the project:
+
+```bash
+npm run dev
+```
+
+### To use the json-server, run the following command:
 
 ```bash
 npx json-server db.json
