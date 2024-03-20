@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import MenuIcon from '@mui/icons-material/Menu';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Popover from '@mui/material/Popover';
@@ -10,8 +11,11 @@ import { useNavigate } from 'react-router-dom';
 
 const UserMenu = () => {
 	const [logoutAnchor, setLogoutAnchor] = useState(null);
+	const [navMenuAnchor, setNavMenuAnchor] = useState(null);
 	const [notificationAnchor, setNotificationAnchor] = useState(null);
+
 	const logoutOpen = Boolean(logoutAnchor);
+	const navMenuOpen = Boolean(navMenuAnchor);
 	const notificationOpen = Boolean(notificationAnchor);
 	const id = open ? 'simple-popover' : undefined;
 
@@ -20,11 +24,13 @@ const UserMenu = () => {
 
 	const handleClick = (event, name) => {
 		if (name === 'logout') setLogoutAnchor(event.currentTarget);
+		if (name === 'navMenu') setNavMenuAnchor(event.currentTarget);
 		if (name === 'notification') setNotificationAnchor(event.currentTarget);
 	};
 
 	const handleClose = (name) => {
 		if (name === 'logout') setLogoutAnchor(null);
+		if (name === 'navMenu') setNavMenuAnchor(null);
 		if (name === 'notification') setNotificationAnchor(null);
 	};
 
@@ -36,6 +42,15 @@ const UserMenu = () => {
 
 	return (
 		<>
+			<button
+				id='navMenu-button'
+				aria-controls={navMenuOpen ? 'navMenu-menu' : undefined}
+				aria-haspopup='true'
+				aria-expanded={navMenuOpen ? 'true' : undefined}
+				onClick={(event) => handleClick(event, 'navMenu')}
+			>
+				<MenuIcon className='icon' />
+			</button>
 			{/* <button
 				aria-describedby={id}
 				variant='contained'
@@ -62,7 +77,28 @@ const UserMenu = () => {
 					'aria-labelledby': 'logout-button'
 				}}
 			>
-				<MenuItem onClick={handleLogout}>Logout</MenuItem>
+				<MenuItem onClick={handleLogout}>Logout TEST</MenuItem>
+			</Menu>
+
+			{/* Nav Menu */}
+			<Menu
+				id='navMenu-menu'
+				anchorEl={navMenuAnchor}
+				open={navMenuOpen}
+				onClose={() => handleClose('navMenu')}
+				MenuListProps={{
+					'aria-labelledby': 'navMenu-button'
+				}}
+			>
+				<MenuItem onClick={() => navigate('/ammonia')}>
+					Ammonia
+				</MenuItem>
+				<MenuItem onClick={() => navigate('/temperature')}>
+					Temperature
+				</MenuItem>
+				<MenuItem onClick={() => navigate('/humidity')}>
+					Humidity
+				</MenuItem>
 			</Menu>
 
 			<Popover
