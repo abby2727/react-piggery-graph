@@ -12,7 +12,12 @@ const queryClient = new QueryClient();
 export const AuthContext = createContext();
 
 const App = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(true);
+	const [isLoggedIn, setIsLoggedIn] = useState(() => {
+		const saved = localStorage.getItem('isLoggedIn');
+		const initialValue = JSON.parse(saved);
+		return initialValue || false;
+	});
+
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -21,6 +26,10 @@ const App = () => {
 			navigate('/');
 		}
 	}, [isLoggedIn, location, navigate]);
+
+	useEffect(() => {
+		localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+	}, [isLoggedIn]);
 
 	const routing = useRoutes([
 		{ path: '/', element: isLoggedIn ? <Home /> : <LoginPage /> },
