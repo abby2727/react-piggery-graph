@@ -14,8 +14,15 @@ export const AuthContext = createContext();
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(() => {
 		const saved = localStorage.getItem('isLoggedIn');
-		const initialValue = JSON.parse(saved);
-		return initialValue || false;
+		const savedTime = localStorage.getItem('savedTime');
+		const now = new Date();
+		if (savedTime && now.getTime() - savedTime > 60 * 60 * 1000) {
+			// If more than 1 hour has passed, ignore the saved value
+			return false;
+		} else {
+			const initialValue = JSON.parse(saved);
+			return initialValue || false;
+		}
 	});
 
 	const navigate = useNavigate();
@@ -29,6 +36,7 @@ const App = () => {
 
 	useEffect(() => {
 		localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+		localStorage.setItem('savedTime', new Date().getTime());
 	}, [isLoggedIn]);
 
 	const routing = useRoutes([
