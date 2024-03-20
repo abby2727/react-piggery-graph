@@ -183,11 +183,22 @@ const Home = () => {
 			myChartRef.current = new Chart(ctx, {
 				type: 'bar',
 				data: {
-					labels: getAmmoniaLabels(transformedData),
+					labels: [
+						'label 1',
+						'label 2',
+						'label 3',
+						'label 4',
+						'label 5',
+						'label 6',
+						'label 7',
+						'label 8',
+						'label 9',
+						'label 10'
+					],
 					datasets: [
 						{
 							label: 'Ammonia Levels',
-							data: getAmmoniaAverageValues(transformedData),
+							data: [5, 4, 3, 4, 10, 6, 7, 8, 9, 10],
 							backgroundColor: 'rgba(255, 26, 104, 0.2)',
 							borderColor: 'rgba(255, 26, 104, 1)',
 							borderWidth: 1
@@ -239,7 +250,7 @@ const Home = () => {
 					datasets: [
 						{
 							label: '',
-							data: getAmmoniaAverageValues(transformedData)
+							data: [5, 4, 3, 4, 10, 6, 7, 8, 9, 10]
 						}
 					]
 				},
@@ -291,7 +302,7 @@ const Home = () => {
 
 	useEffect(() => {
 		if (barLength > 7) {
-			const chartWidth = 1000 + (barLength - 7) * 30;
+			const chartWidth = 928 + (barLength - 7) * 30;
 			boxRef.current.style.width = `${chartWidth}px`;
 		}
 	}, [barLength]);
