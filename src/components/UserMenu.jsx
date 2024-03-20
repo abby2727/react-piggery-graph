@@ -36,13 +36,13 @@ const UserMenu = () => {
 
 	return (
 		<>
-			<button
+			{/* <button
 				aria-describedby={id}
 				variant='contained'
 				onClick={(event) => handleClick(event, 'notification')}
 			>
 				<NotificationsIcon className='icon' />
-			</button>
+			</button> */}
 			<button
 				id='logout-button'
 				aria-controls={logoutOpen ? 'logout-menu' : undefined}
