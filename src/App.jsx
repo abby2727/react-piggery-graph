@@ -30,7 +30,7 @@ const App = () => {
 
 	useEffect(() => {
 		if (isLoggedIn && location.pathname === '/login') {
-			navigate('/');
+			navigate('/ammonia');
 		}
 	}, [isLoggedIn, location, navigate]);
 
@@ -40,7 +40,7 @@ const App = () => {
 	}, [isLoggedIn]);
 
 	const routing = useRoutes([
-		{ path: '/', element: isLoggedIn ? <Home /> : <LoginPage /> },
+		{ path: '/ammonia', element: isLoggedIn ? <Home /> : <LoginPage /> },
 		{
 			path: '/temperature',
 			element: isLoggedIn ? <TemperatureGraph /> : <LoginPage />

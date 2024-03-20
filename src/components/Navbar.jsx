@@ -9,7 +9,7 @@ const Navbar = () => {
 				<div className='logo'>
 					<img src={logo} alt='Logo' width={55} height={55} />
 				</div>
-				<NavLink to='/'>Ammonia</NavLink>
+				<NavLink to='/ammonia'>Ammonia</NavLink>
 				<NavLink to='/temperature'>Temperature</NavLink>
 				<NavLink to='/humidity'>Humidity</NavLink>
 			</div>

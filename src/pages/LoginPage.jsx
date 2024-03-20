@@ -1,12 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { AuthContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+	const navigate = useNavigate();
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [loginFailed, setLoginFailed] = useState(false);
@@ -28,6 +31,10 @@ const LoginPage = () => {
 			setLoginFailed(true);
 		}
 	};
+
+	useEffect(() => {
+		navigate('/login');
+	}, []);
 
 	return (
 		<Box
