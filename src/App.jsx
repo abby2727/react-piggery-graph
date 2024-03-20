@@ -16,8 +16,8 @@ const App = () => {
 		const saved = localStorage.getItem('isLoggedIn');
 		const savedTime = localStorage.getItem('savedTime');
 		const now = new Date();
-		if (savedTime && now.getTime() - savedTime > 60 * 60 * 1000) {
-			// If more than 1 hour has passed, ignore the saved value
+		if (savedTime && now.getTime() - savedTime > 6 * 60 * 60 * 1000) {
+			// If more than 6 hours has passed, ignore the saved value
 			return false;
 		} else {
 			const initialValue = JSON.parse(saved);
