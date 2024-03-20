@@ -37,7 +37,7 @@ const UserMenu = () => {
 	const handleLogout = () => {
 		setLogoutAnchor(null);
 		setIsLoggedIn(false); // Logout the user
-		navigate('/login'); // Redirect to login page
+		navigate('/'); // Redirect to login page
 	};
 
 	return (

@@ -33,7 +33,7 @@ const LoginPage = () => {
 	};
 
 	useEffect(() => {
-		navigate('/login');
+		navigate('/');
 	}, []);
 
 	return (

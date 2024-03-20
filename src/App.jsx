@@ -29,7 +29,7 @@ const App = () => {
 	const location = useLocation();
 
 	useEffect(() => {
-		if (isLoggedIn && location.pathname === '/login') {
+		if (isLoggedIn && location.pathname === '/') {
 			navigate('/ammonia');
 		}
 	}, [isLoggedIn, location, navigate]);
@@ -49,7 +49,7 @@ const App = () => {
 			path: '/humidity',
 			element: isLoggedIn ? <HumidityGraph /> : <LoginPage />
 		},
-		{ path: '/login', element: <LoginPage /> }
+		{ path: '/', element: <LoginPage /> }
 	]);
 
 	return (
