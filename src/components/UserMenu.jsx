@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Popover from '@mui/material/Popover';
 import { Paper, Typography } from '@mui/material';
 import { AuthContext } from '../App'; // import AuthContext
+import { useNavigate } from 'react-router-dom';
 
 const UserMenu = () => {
 	const [logoutAnchor, setLogoutAnchor] = useState(null);
@@ -15,6 +16,7 @@ const UserMenu = () => {
 	const id = open ? 'simple-popover' : undefined;
 
 	const { setIsLoggedIn } = useContext(AuthContext); // use AuthContext
+	const navigate = useNavigate();
 
 	const handleClick = (event, name) => {
 		if (name === 'logout') setLogoutAnchor(event.currentTarget);
@@ -23,13 +25,13 @@ const UserMenu = () => {
 
 	const handleClose = (name) => {
 		if (name === 'logout') setLogoutAnchor(null);
-
 		if (name === 'notification') setNotificationAnchor(null);
 	};
 
 	const handleLogout = () => {
 		setLogoutAnchor(null);
-		setIsLoggedIn(false);
+		setIsLoggedIn(false); // Logout the user
+		navigate('/login'); // Redirect to login page
 	};
 
 	return (
@@ -46,7 +48,7 @@ const UserMenu = () => {
 				aria-controls={logoutOpen ? 'logout-menu' : undefined}
 				aria-haspopup='true'
 				aria-expanded={logoutOpen ? 'true' : undefined}
-				onClick={(event) => handleClick(event, 'logout')} // call handleClick with 'logout'
+				onClick={(event) => handleClick(event, 'logout')}
 			>
 				<AccountCircleIcon className='icon' />
 			</button>

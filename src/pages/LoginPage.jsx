@@ -9,14 +9,24 @@ import { AuthContext } from '../App';
 const LoginPage = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [loginFailed, setLoginFailed] = useState(false);
 
 	const { setIsLoggedIn } = useContext(AuthContext);
+	const credentials = {
+		username: 'a',
+		password: 'a'
+	};
 
 	const handleLogin = (event) => {
 		event.preventDefault();
-		// Handle login logic here
-		console.log(`Username: ${username}, Password: ${password}`);
-		setIsLoggedIn(true);
+		if (
+			username === credentials.username &&
+			password === credentials.password
+		) {
+			setIsLoggedIn(true);
+		} else {
+			setLoginFailed(true);
+		}
 	};
 
 	return (
@@ -38,6 +48,16 @@ const LoginPage = () => {
 				<Typography variant='h4' align='center'>
 					Sign in
 				</Typography>
+				{loginFailed && (
+					<Typography
+						variant='h6'
+						align='center'
+						style={{ color: 'red' }}
+						sx={{ fontSize: '1rem' }}
+					>
+						Invalid username or password
+					</Typography>
+				)}
 				<form onSubmit={handleLogin}>
 					<TextField
 						variant='outlined'
@@ -51,6 +71,7 @@ const LoginPage = () => {
 						autoFocus
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
+						error={loginFailed}
 					/>
 					<TextField
 						variant='outlined'
@@ -64,6 +85,7 @@ const LoginPage = () => {
 						autoComplete='current-password'
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
+						error={loginFailed}
 					/>
 					<Button
 						type='submit'
