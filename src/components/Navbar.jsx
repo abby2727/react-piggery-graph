@@ -9,9 +9,15 @@ const Navbar = () => {
 				<div className='logo'>
 					<img src={logo} alt='Logo' width={55} height={55} />
 				</div>
-				<NavLink to='/ammonia'>Ammonia</NavLink>
-				<NavLink to='/temperature'>Temperature</NavLink>
-				<NavLink to='/humidity'>Humidity</NavLink>
+				<NavLink className='nav-link' to='/ammonia'>
+					Ammonia
+				</NavLink>
+				<NavLink className='nav-link' to='/temperature'>
+					Temperature
+				</NavLink>
+				<NavLink className='nav-link' to='/humidity'>
+					Humidity
+				</NavLink>
 			</div>
 			<ul>
 				<UserMenu />

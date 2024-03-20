@@ -129,6 +129,10 @@ nav a.active {
 	border-radius: 5px;
 }
 
+.nav-menu-button {
+	display: none;
+}
+
 /* Large devices (desktops, laptops) */
 @media (min-width: 992px) {
 	.chartBox,
@@ -155,7 +159,7 @@ nav a.active {
 }
 
 /* Small devices (phones) */
-@media (min-width: 413px) and (max-width: 767px) {
+@media (min-width: 426px) and (max-width: 767px) {
 	.chartBox,
 	.colLarge {
 		width: 38em;
@@ -166,10 +170,18 @@ nav a.active {
 	}
 }
 
-/* Extra small devices (phones) */
-@media (max-width: 412px) {
+/* Small devices (phones) */
+@media (max-width: 425px) {
 	nav {
 		padding: 10px;
+	}
+
+	.nav-link {
+		display: none;
+	}
+
+	.nav-menu-button {
+		display: block;
 	}
 
 	.chartBox,

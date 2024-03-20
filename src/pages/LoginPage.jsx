@@ -16,8 +16,8 @@ const LoginPage = () => {
 
 	const { setIsLoggedIn } = useContext(AuthContext);
 	const credentials = {
-		username: 'a',
-		password: 'a'
+		username: 'researcher1',
+		password: 'Thesis!2024'
 	};
 
 	const handleLogin = (event) => {

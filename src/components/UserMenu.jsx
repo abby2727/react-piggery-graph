@@ -48,6 +48,7 @@ const UserMenu = () => {
 				aria-haspopup='true'
 				aria-expanded={navMenuOpen ? 'true' : undefined}
 				onClick={(event) => handleClick(event, 'navMenu')}
+				className='nav-menu-button'
 			>
 				<MenuIcon className='icon' />
 			</button>
@@ -77,7 +78,7 @@ const UserMenu = () => {
 					'aria-labelledby': 'logout-button'
 				}}
 			>
-				<MenuItem onClick={handleLogout}>Logout TEST</MenuItem>
+				<MenuItem onClick={handleLogout}>Logout</MenuItem>
 			</Menu>
 
 			{/* Nav Menu */}
