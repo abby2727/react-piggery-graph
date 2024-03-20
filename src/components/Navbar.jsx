@@ -4,7 +4,7 @@ import logo from '../assets/logo/SNSU_Logo-Bg.png';
 
 const Navbar = () => {
 	return (
-		<nav className='nav'>
+		<nav>
 			<div className='left-nav'>
 				<div className='logo'>
 					<img src={logo} alt='Logo' width={55} height={55} />
