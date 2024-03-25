@@ -133,6 +133,31 @@ nav a.active {
 	display: none;
 }
 
+/* CSS breakpoint for a minimum height of 700px and a maximum height of 850px */
+@media (min-height: 700px) and (max-height: 850px) {
+	.chartCard {
+		padding-top: 2px;
+	}
+
+	.chartBox {
+		width: 58em;
+		padding: 10px;
+	}
+
+	.colLarge,
+	.box {
+		width: 58em;
+	}
+
+	.box {
+		width: calc(58em - 40px);
+	}
+
+	.date-picker {
+		padding-top: 2px;
+	}
+}
+
 /* Large devices (desktops, laptops) */
 @media (min-width: 992px) {
 	.chartBox,
