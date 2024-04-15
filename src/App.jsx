@@ -6,6 +6,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import TemperatureGraph from './pages/TemperatureGraph';
 import HumidityGraph from './pages/HumidityGraph';
 import LoginPage from './pages/LoginPage';
+import AllReading from './pages/AllReading';
 
 const queryClient = new QueryClient();
 
@@ -49,16 +50,18 @@ const App = () => {
 			path: '/humidity',
 			element: isLoggedIn ? <HumidityGraph /> : <LoginPage />
 		},
+		{
+			path: '/all-reading',
+			element: isLoggedIn ? <AllReading /> : <LoginPage />
+		},
 		{ path: '/', element: <LoginPage /> }
 	]);
 
 	return (
 		<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
 			<QueryClientProvider client={queryClient}>
-				<div className='container'>
-					{isLoggedIn && <Navbar />}
-					{routing}
-				</div>
+				{isLoggedIn && <Navbar />}
+				<div className='container'>{routing}</div>
 			</QueryClientProvider>
 		</AuthContext.Provider>
 	);

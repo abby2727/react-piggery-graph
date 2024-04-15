@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-	height: 100vh;
+	height: calc(100vh - 3.8rem);
 	background-image: linear-gradient(#ffffff, #e1e1e1);
 }
 

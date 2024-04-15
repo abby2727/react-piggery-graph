@@ -192,8 +192,8 @@ const TemperatureGraph = () => {
 						{
 							label: 'Temperature Levels',
 							data: getTempAverageValues(transformedData),
-							backgroundColor: 'rgba(0, 0, 0, 0.4)',
-							borderColor: 'rgba(0, 0, 0, 0.8)',
+							backgroundColor: 'rgba(255, 206, 86, 0.4)',
+							borderColor: 'rgba(255, 206, 86, 0.9)',
 							borderWidth: 1
 						}
 					]
