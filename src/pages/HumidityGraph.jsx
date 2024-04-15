@@ -190,8 +190,8 @@ const HumidityGraph = () => {
 						{
 							label: 'Humidity Levels',
 							data: getHumidityAverageValues(transformedData),
-							backgroundColor: 'rgba(255, 206, 86, 0.2)',
-							borderColor: 'rgba(255, 206, 86, 1)',
+							backgroundColor: 'rgba(255, 159, 64, 0.4)',
+							borderColor: 'rgba(255, 159, 64, 0.8)',
 							borderWidth: 1
 						}
 					]

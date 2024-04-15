@@ -188,8 +188,8 @@ const Home = () => {
 						{
 							label: 'Ammonia Levels',
 							data: getAmmoniaAverageValues(transformedData),
-							backgroundColor: 'rgba(255, 26, 104, 0.2)',
-							borderColor: 'rgba(255, 26, 104, 1)',
+							backgroundColor: 'rgba(166, 77, 77, 0.7)',
+							borderColor: 'rgba(166, 77, 77, 1)',
 							borderWidth: 1
 						}
 					]
