@@ -19,11 +19,19 @@ const AllReading = () => {
 			'temperature-data',
 			() => {
 				return axios.get(
-					'https://piggery-backend.vercel.app/api/temperature/'
+					'https://piggery-backend.vercel.app/api/temperature'
 				);
 			},
 			{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
 		);
+
+	const { isLoading: isLoadingHumidity, data: humidityValue } = useQuery(
+		'humidity-data',
+		() => {
+			return axios.get('https://piggery-backend.vercel.app/api/humidity');
+		},
+		{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
+	);
 
 	//* Returns an object with `Date` as key and `Average Data` as value
 	const transformObject = (data) => {
@@ -59,10 +67,11 @@ const AllReading = () => {
 	const myChartRef = useRef(null);
 
 	useEffect(() => {
-		if (!isLoadingAmmonia && !isLoadingTemperature) {
+		if (!isLoadingAmmonia && !isLoadingTemperature && !isLoadingHumidity) {
 			const ctx = chartRef.current.getContext('2d');
 			const ammoniaData = transformObject(ammoniaValue?.data);
 			const temperatureData = transformObject(temperatureValue?.data);
+			const humidityData = transformObject(humidityValue?.data);
 
 			myChartRef.current = new Chart(ctx, {
 				type: 'bar',
@@ -85,7 +94,7 @@ const AllReading = () => {
 						},
 						{
 							label: 'Humidity Levels',
-							data: ammoniaData.values,
+							data: humidityData.values,
 							backgroundColor: 'rgba(255, 159, 64, 0.4)',
 							borderColor: 'rgba(255, 159, 64, 0.9)',
 							borderWidth: 1
@@ -118,13 +127,13 @@ const AllReading = () => {
 
 			return () => myChartRef.current.destroy();
 		}
-	}, [ammoniaValue?.data, temperatureValue?.data]);
+	}, [ammoniaValue?.data, temperatureValue?.data, humidityValue?.data]);
 
 	//* ========== CHART 2
 	const chartRef2 = useRef(null);
 
 	useEffect(() => {
-		if (!isLoadingAmmonia && !isLoadingTemperature) {
+		if (!isLoadingAmmonia && !isLoadingTemperature && !isLoadingHumidity) {
 			const ctx2 = chartRef2.current.getContext('2d');
 			const ammoniaData = transformObject(ammoniaValue?.data);
 
@@ -174,7 +183,7 @@ const AllReading = () => {
 
 			return () => myChart2.destroy();
 		}
-	}, [ammoniaValue?.data, temperatureValue?.data]);
+	}, [ammoniaValue?.data, temperatureValue?.data, humidityValue?.data]);
 
 	//* Adjust the width of the chart box based on the number of bars
 	const boxRef = useRef(null);
@@ -196,7 +205,9 @@ const AllReading = () => {
 	return (
 		<>
 			<div className='chartCard'>
-				{!isLoadingAmmonia && !isLoadingTemperature ? (
+				{!isLoadingAmmonia &&
+				!isLoadingTemperature &&
+				!isLoadingHumidity ? (
 					<>
 						<div className='chartBox'>
 							<div className='colSmall'>

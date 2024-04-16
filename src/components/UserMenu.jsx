@@ -111,7 +111,6 @@ const UserMenu = () => {
 					sx={{ borderColor: 'black', marginLeft: '10px' }}
 				/>
 				<MenuItem onClick={() => navigate('/all-reading')}>
-					{/* All */}
 					<span style={{ fontWeight: 500, fontSize: 17 }}>All</span>
 				</MenuItem>
 			</Menu>
