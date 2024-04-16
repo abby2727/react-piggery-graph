@@ -2,7 +2,14 @@ import { useContext, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Menu, MenuItem, Paper, Popover, Typography } from '@mui/material';
+import {
+	Menu,
+	MenuItem,
+	Paper,
+	Popover,
+	Typography,
+	Divider
+} from '@mui/material';
 import { AuthContext } from '../App'; // import AuthContext
 import { useNavigate } from 'react-router-dom';
 
@@ -96,6 +103,16 @@ const UserMenu = () => {
 				</MenuItem>
 				<MenuItem onClick={() => navigate('/humidity')}>
 					Humidity
+				</MenuItem>
+				<Divider
+					orientation='horizontal'
+					variant='middle'
+					flexItem
+					sx={{ borderColor: 'black', marginLeft: '10px' }}
+				/>
+				<MenuItem onClick={() => navigate('/all-reading')}>
+					{/* All */}
+					<span style={{ fontWeight: 500, fontSize: 17 }}>All</span>
 				</MenuItem>
 			</Menu>
 
