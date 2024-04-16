@@ -6,13 +6,24 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useQuery } from 'react-query';
 
 const AllReading = () => {
-	const { isLoading, data: ammoniaValue } = useQuery(
+	const { isLoading: isLoadingAmmonia, data: ammoniaValue } = useQuery(
 		'ammonia-data',
 		() => {
 			return axios.get('https://piggery-backend.vercel.app/api/ammonia');
 		},
 		{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
 	);
+
+	const { isLoading: isLoadingTemperature, data: temperatureValue } =
+		useQuery(
+			'temperature-data',
+			() => {
+				return axios.get(
+					'https://piggery-backend.vercel.app/api/temperature/'
+				);
+			},
+			{ staleTime: 10 * 60 * 1000 } // refetch ONLY after 10 minutes
+		);
 
 	//* Returns an object with `Date` as key and `Average Data` as value
 	const transformObject = (data) => {
@@ -48,20 +59,35 @@ const AllReading = () => {
 	const myChartRef = useRef(null);
 
 	useEffect(() => {
-		if (!isLoading) {
+		if (!isLoadingAmmonia && !isLoadingTemperature) {
 			const ctx = chartRef.current.getContext('2d');
-			const transformedData = transformObject(ammoniaValue?.data);
+			const ammoniaData = transformObject(ammoniaValue?.data);
+			const temperatureData = transformObject(temperatureValue?.data);
 
 			myChartRef.current = new Chart(ctx, {
 				type: 'bar',
 				data: {
-					labels: transformedData.formattedDates,
+					labels: ammoniaData.formattedDates,
 					datasets: [
 						{
 							label: 'Ammonia Levels',
-							data: transformedData.values,
+							data: ammoniaData.values,
 							backgroundColor: 'rgba(16, 65, 119, 0.4)',
 							borderColor: 'rgba(16, 65, 119, 0.9)',
+							borderWidth: 1
+						},
+						{
+							label: 'Temperature Levels',
+							data: temperatureData.values,
+							backgroundColor: 'rgba(255, 206, 86, 0.4)',
+							borderColor: 'rgba(255, 206, 86, 0.9)',
+							borderWidth: 1
+						},
+						{
+							label: 'Humidity Levels',
+							data: ammoniaData.values,
+							backgroundColor: 'rgba(255, 159, 64, 0.4)',
+							borderColor: 'rgba(255, 159, 64, 0.9)',
 							borderWidth: 1
 						}
 					]
@@ -92,15 +118,15 @@ const AllReading = () => {
 
 			return () => myChartRef.current.destroy();
 		}
-	}, [ammoniaValue?.data]);
+	}, [ammoniaValue?.data, temperatureValue?.data]);
 
 	//* ========== CHART 2
 	const chartRef2 = useRef(null);
 
 	useEffect(() => {
-		if (!isLoading) {
+		if (!isLoadingAmmonia && !isLoadingTemperature) {
 			const ctx2 = chartRef2.current.getContext('2d');
-			const transformedData = transformObject(ammoniaValue?.data);
+			const ammoniaData = transformObject(ammoniaValue?.data);
 
 			const myChart2 = new Chart(ctx2, {
 				type: 'bar',
@@ -109,7 +135,7 @@ const AllReading = () => {
 					datasets: [
 						{
 							label: '',
-							data: transformedData.values
+							data: ammoniaData.values
 						}
 					]
 				},
@@ -148,7 +174,7 @@ const AllReading = () => {
 
 			return () => myChart2.destroy();
 		}
-	}, [ammoniaValue?.data]);
+	}, [ammoniaValue?.data, temperatureValue?.data]);
 
 	//* Adjust the width of the chart box based on the number of bars
 	const boxRef = useRef(null);
@@ -170,7 +196,7 @@ const AllReading = () => {
 	return (
 		<>
 			<div className='chartCard'>
-				{!isLoading ? (
+				{!isLoadingAmmonia && !isLoadingTemperature ? (
 					<>
 						<div className='chartBox'>
 							<div className='colSmall'>
