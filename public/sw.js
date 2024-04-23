@@ -43,10 +43,7 @@ self.addEventListener('activate', async () => {
 });
 
 self.addEventListener('push', (e) => {
-	self.registration.showNotification(
-		'Piggery front-end message notifications',
-		{
-			body: e.data.text()
-		}
-	);
+	self.registration.showNotification('Piggery Notifications', {
+		body: e.data.text()
+	});
 });
