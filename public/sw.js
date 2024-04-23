@@ -17,7 +17,8 @@ const urlBase64ToUint8Array = (base64String) => {
 };
 
 const saveSubscription = async (subscription) => {
-	const SERVER_URL = 'http://localhost:3001/api/save-subscription';
+	const SERVER_URL =
+		'https://piggery-backend.vercel.app/api/save-subscription';
 
 	const response = await fetch(SERVER_URL, {
 		method: 'post',
